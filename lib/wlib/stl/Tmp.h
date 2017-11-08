@@ -189,11 +189,6 @@ namespace wlp {
             : public true_type {
     };
 
-    template<typename Result, typename... Arguments>
-    struct is_referenceable<Result(Arguments......)>
-            : public true_type {
-    };
-
     template<typename T, bool = or_<is_referenceable<T>, is_void<T>>::value>
     struct __lpointer__ {
         typedef T type;
@@ -300,21 +295,6 @@ namespace wlp {
     };
 
     template<typename Result, typename... ArgTypes>
-    struct is_function<Result(ArgTypes......)>
-            : public true_type {
-    };
-
-    template<typename Result, typename... ArgTypes>
-    struct is_function<Result(ArgTypes......) &>
-            : public true_type {
-    };
-
-    template<typename Result, typename... ArgTypes>
-    struct is_function<Result(ArgTypes......) &&>
-            : public true_type {
-    };
-
-    template<typename Result, typename... ArgTypes>
     struct is_function<Result(ArgTypes...) const>
             : public true_type {
     };
@@ -329,81 +309,6 @@ namespace wlp {
             : public true_type {
     };
 
-    template<typename Result, typename... ArgTypes>
-    struct is_function<Result(ArgTypes......) const>
-            : public true_type {
-    };
-
-    template<typename Result, typename... ArgTypes>
-    struct is_function<Result(ArgTypes......) const &>
-            : public true_type {
-    };
-
-    template<typename Result, typename... ArgTypes>
-    struct is_function<Result(ArgTypes......) const &&>
-            : public true_type {
-    };
-
-    template<typename Result, typename... ArgTypes>
-    struct is_function<Result(ArgTypes...) volatile>
-            : public true_type {
-    };
-
-    template<typename Result, typename... ArgTypes>
-    struct is_function<Result(ArgTypes...) volatile &>
-            : public true_type {
-    };
-
-    template<typename Result, typename... ArgTypes>
-    struct is_function<Result(ArgTypes...) volatile &&>
-            : public true_type {
-    };
-
-    template<typename Result, typename... ArgTypes>
-    struct is_function<Result(ArgTypes......) volatile>
-            : public true_type {
-    };
-
-    template<typename Result, typename... ArgTypes>
-    struct is_function<Result(ArgTypes......) volatile &>
-            : public true_type {
-    };
-
-    template<typename Result, typename... ArgTypes>
-    struct is_function<Result(ArgTypes......) volatile &&>
-            : public true_type {
-    };
-
-    template<typename Result, typename... ArgTypes>
-    struct is_function<Result(ArgTypes...) const volatile>
-            : public true_type {
-    };
-
-    template<typename Result, typename... ArgTypes>
-    struct is_function<Result(ArgTypes...) const volatile &>
-            : public true_type {
-    };
-
-    template<typename Result, typename... ArgTypes>
-    struct is_function<Result(ArgTypes...) const volatile &&>
-            : public true_type {
-    };
-
-    template<typename Result, typename... ArgTypes>
-    struct is_function<Result(ArgTypes......) const volatile>
-            : public true_type {
-    };
-
-    template<typename Result, typename... ArgTypes>
-    struct is_function<Result(ArgTypes......) const volatile &>
-            : public true_type {
-    };
-
-    template<typename Result, typename... ArgTypes>
-    struct is_function<Result(ArgTypes......) const volatile &&>
-            : public true_type {
-    };
-
     template<typename, typename>
     struct is_same
             : public false_type {
@@ -414,12 +319,12 @@ namespace wlp {
             : public true_type {
     };
 
-    template<template<class> typename>
+    template<template<class> class>
     constexpr bool is_any_of() {
         return false;
     }
 
-    template<template<class> typename Op, typename Head, typename... Tail>
+    template<template<class> class Op, typename Head, typename... Tail>
     constexpr bool is_any_of() {
         return Op<Head>::value || is_any_of<Op, Tail...>();
     };
